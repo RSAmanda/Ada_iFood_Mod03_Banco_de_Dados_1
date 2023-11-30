@@ -214,7 +214,61 @@ Neste exemplo, a coluna "status" é definida com um valor padrão "pendente", qu
 
 Além disso, é importante observar que um valor padrão pode ser definido para qualquer tipo de coluna, incluindo texto, números, datas, booleanos etc. É uma ferramenta útil para garantir a consistência dos dados em uma tabela e simplificar a inserção de dados.
 
+### Chave Primária (*Primary Keys ou PKs*)
+
+No PostgreSQL, uma Primary Key é uma restrição que define uma coluna ou conjunto de colunas em uma tabela como uma chave primária. A Primary Key é usada para identificar de forma exclusiva cada linha da tabela. Cada tabela pode ter apenas uma Primary Key.
+
+Uma analogia para entender a importância de uma Primary Key seria como uma identidade para uma pessoa. Assim como cada pessoa tem um CPF exclusivo, cada linha em uma tabela precisa ter um identificador exclusivo para ser identificado corretamente.
+
+> Primary Key é uma restrição importante no PostgreSQL que garante que cada linha de uma tabela tenha um identificador exclusivo e ajuda a melhorar o desempenho das consultas.
+
+Para criar uma Primary Key em uma tabela no PostgreSQL, você pode usar a seguinte sintaxe:
+
+
+```
+ALTER TABLE tabela
+ADD CONSTRAINT nome_da_pk PRIMARY KEY (coluna);
+```
+
+Onde "``tabela``" é o nome da tabela em que você deseja criar a Primary Key, "``nome_da_pk``" é um nome de sua escolha para a Primary Key e "``coluna``" é o nome da coluna que você deseja definir como a chave primária.
+
+
+### Chaves estrangeiras (*Foreign Keys ou FKs*)
+
+
+*Foreign Keys*, ou chaves estrangeiras, são uma ferramenta importante para estabelecer relacionamentos entre tabelas em um banco de dados. Uma *Foreign Key* é uma coluna (ou um conjunto de colunas) em uma tabela que se refere a uma *Primary Key* em outra tabela. A *Foreign Key* é usada para garantir que os dados em uma tabela estejam relacionados aos dados em outra tabela, mantendo a integridade referencial do banco de dados.
+
+Suponha que você tem uma tabela de ``produtos`` e outra tabela de ``categorias``. Cada produto pode estar associado a uma única categoria. Para estabelecer esse relacionamento, você pode adicionar uma coluna chamada "``id_categoria``" na tabela de produtos e definir essa coluna como uma *Foreign Key* que referencia a *Primary Key* da tabela de categorias.
+
+```
+CREATE TABLE categorias (
+  id SERIAL PRIMARY KEY,
+  nome VARCHAR(50)
+);
+
+CREATE TABLE produtos (
+  id SERIAL PRIMARY KEY,
+  id_categoria INTEGER,
+  nome VARCHAR(50),
+  preco NUMERIC(10,2),
+  FOREIGN KEY (id_categoria) REFERENCES categorias(id)
+);
+```
+
 ## Aula 3
+
+### MER - Modelo Entidade-Relacionamento
+
+O MER (Modelo Entidade Relacionamento) é utilizado para descrever os objetos do mundo real através de entidades, com suas propriedades que são os atributos e os seus relacionamentos.
+
+As entidades representam um objeto do mundo real e que possuem uma existência independente, como: pessoas, empresa, carro, casa, entre outras coisas que podem ser representadas por uma entidade. Podemos considerar que existem três tipos de entidades:
+- As entidades fortes, que não dependem de outras entidades para existirem;
+- As entidades fracas, dependem de outras entidades para existir, ou seja, elas não possuem existência própria ou não possuem atributos próprios para identificação, dependendo assim, dos atributos chave das entidades fortes;
+- As entidades associativas, que são utilizadas quando existe a necessidade de associar uma entidade a um relacionamento.
+
+### DER - Diagrama Entidade-Relacionemento
+
+O DER (Diagrama Entidade-Relacionamento) é utilizado para representar em forma gráfica o que foi descrito no MER (Modelo Entidade Relacionamento).
 
 ## Aula 4
 
