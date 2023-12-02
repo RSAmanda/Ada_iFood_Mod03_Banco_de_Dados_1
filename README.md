@@ -270,9 +270,181 @@ As entidades representam um objeto do mundo real e que possuem uma existência i
 
 O DER (Diagrama Entidade-Relacionamento) é utilizado para representar em forma gráfica o que foi descrito no MER (Modelo Entidade Relacionamento).
 
+### O que são entidades?
+
+Entidades são formas gráficas que representam objetos do mundo real e que possuem existência independente, podemos dizer que representam por exemplo pessoas, empresas, automóveis, casa, departamentos, produtos e muitas outras coisas.
+
+De forma simples podemos dizer que existem três tipos de entidades, as entidades fortes, as entidades fracas e as entidades associativas.
+
+#### Entidades fortes:
+
+São entidades que não dependem de outras entidades para existirem. Um exemplo seria em um sistema de recursos humanos (RH), onde a entidade cargos, por exemplo, independe de quaisquer outras para existir.
+
+#### Entidades fracas:
+
+As entidades fracas seguem o lado oposto das fortes, elas dependem de outras entidades para existirem. Utilizando o exemplo anterior do sistema de recursos humanos, uma entidade de colaborador dependeria da entidade cargo, pois um colaborador sem cargo não faria sentido.
+
+#### Entidades associativas:
+As entidades associativas são utilizadas quando temos a necessidade de associar o relacionamento entre duas ou mais entidades, neste caso um exemplo que podemos utilizar é com base no sistema de recursos humanos anteriores, se pensarmos que temos uma entidade chamada cargo e uma entidade chamada área que pode ter valores como gestão, tecnologia da informação, recrutador etc. Podemos pensar no seguinte cenário: Um cargo pode estar em várias áreas ao mesmo tempo, por exemplo, um cargo de gestor pode administrar várias áreas, da mesma forma que várias áreas são administradas pelo cargo de gestor, mais um exemplo seria no caso de um recrutador que pode recrutar para várias áreas, ao mesmo tempo que várias áreas têm recrutamento pelo cargo recrutador, neste caso estabelecemos um relacionamento que chamamos de muitos para muitos que veremos mais especificamente no tópico de Relacionamentos logo abaixo. Levando em consideração estes exemplos, devemos criar uma entidade associativa que terá como atributo as chaves primárias das tabelas que fazem parte do relacionamento.
+
+### O que são atributos?
+
+Atributos são representações de características de uma entidade, podemos utilizar como exemplo os atributos definidos para as entidades abaixo:
+
+Os atributos podem ser definidos em algumas categorias, e elas são:
+
+#### Atributos Simples:
+
+São atributos indivisíveis, ou seja, é composto por uma característica que não tem como dividir/destrinchar em outros atributos, um exemplo seria o atributo RG, ele não pode ser dividido em partes menores para formar outros atributos, o que o torna indivisível;
+
+#### Atributos Compostos:
+
+São atributos que podem ser divididos em uma ou mais partes que o representam, como o atributo Endereço, ele pode ser subdividido em atributos menores, como, por exemplo, cidade, estado, rua, cep, número e bairro. Também temos o atributo Nome na entidade de pessoas, pois podemos dividir ele em dois atributos menores que seriam Primeiro Nome e Sobrenome;
+
+#### Atributos Monovalorados:
+
+São atributos que possuem um único valor para a entidade, como por exemplo, o campo nome relacionado a entidade automóvel;
+
+#### Atributos Multivalorados:
+
+São atributos que possuem mais de um valor. Por exemplo, o caso da categoria associada à entidade produtos, pois é possível não ter nenhuma categoria ou ter várias.
+
+#### Atributos Referenciais:
+
+São atributos que representam a ligação de uma entidade com outra em um relacionamento e são chamados de Chave Estrangeira (FK(*Foreign Key*)), ou seja, eles são ligados a chave primária de outra entidade. Um exemplo seria em um banco de dados de *e-commerce* onde temos uma entidade categoria que tem um atributo que armazenará o código de identificação dela no sistema que é sua chave primária (PK), e uma entidade de produto que possui uma categoria, então temos o relacionamento da entidade de produto com a de categoria.
+
+Existem alguns atributos que representam valores únicos que identificam a entidade, podemos utilizar como exemplo um cadastro de clientes, onde temos um atributo que é o CPF, um CPF é um documento único que representa cada cliente, então chamamos ele de chave primária ou utilizamos a sigla PK(*Primary Key*) para identificá-lo.
+
+### Relacionamentos
+A partir do momento que as entidades são identificadas, devemos definir como será o relacionamento entre elas. Os tipos de relacionamentos entre as entidades são três:
+
+#### Relacionamento 1 para 1 (1:1):
+É quando temos duas entidades envolvidas e elas referenciam obrigatoriamente apenas uma a outra. Um exemplo seria em um banco de dados de gestão de clientes, e cada cliente tem seu único endereço, assim como um endereço pertence somente a um cliente.
+
+#### Relacionamento 1 para muitos (1:N):
+É quando uma das entidades envolvidas, que vamos chamar de X pode referenciar várias unidades da outra que podemos nomear de Y, porém, a outra entidade Y só pode referenciar uma unidade da entidade X. Um exemplo seria em um banco de dados de gestão de clientes, onde cada cliente pode ter vários endereços, assim como vários endereços pertencem a um único cliente.
+
 ## Aula 4
 
+### Formas normais
+
+As formas normais são um conjunto de regras para garantir que um banco de dados relacional esteja organizado de maneira coerente e sem redundâncias desnecessárias. As formas normais são importantes porque elas ajudam a evitar problemas como inconsistências de dados, dificuldade de manutenção e desempenho ruim do banco de dados.
+
+Existem várias formas normais, sendo as mais comuns:
+
+- **Primeira Forma Normal (1FN)** A 1FN exige que todas as tabelas em um banco de dados relacional tenham dados atômicos, ou seja, que não haja campos que contenham mais de um valor. Além disso, cada campo em uma tabela deve ter um nome único e cada registro deve ter um identificador exclusivo (chave primária).
+
+- **Segunda Forma Normal (2FN)** A 2FN exige que todas as tabelas em um banco de dados relacional estejam na 1FN e que cada campo em uma tabela dependa totalmente da chave primária da tabela. Isso significa que não deve haver campos que dependam apenas de parte da chave primária.
+
+- **Terceira Forma Normal (3FN)** A 3FN exige que todas as tabelas em um banco de dados relacional estejam na 2FN e que não haja dependências transitivas entre os campos de uma tabela. Isso significa que um campo deve depender apenas da chave primária da tabela e não de outros campos.
+
+- **Forma Normal de Boyce-Codd (BCNF)** A BCNF é uma forma normal mais rigorosa do que a 3FN. Ela exige que cada dependência funcional em uma tabela seja uma chave candidata da tabela. Isso garante que não haja redundância de dados em uma tabela.
+
+Além dessas formas normais, existem outras, como a **Quarta Forma Normal (4FN)**, a **Quinta Forma Normal (5FN)** e a **Forma Normal de Domínio/Elementar (DKNF)**. Essas formas normais são usadas em situações específicas e são menos comuns do que as quatro primeiras.
+
+Para exemplificar, faremos um caso de uso.
+
+Vamos supor que temos uma tabela chamada "Pedidos" que contém informações sobre os pedidos que os clientes fizeram em uma loja virtual:
+
+| Pedido | Cliente | Endereço | Cidade         | Estado | CEP       | Produto  | Quantidade | Preço |
+|:------:|:-------:|:--------:|:--------------:|:------:|:---------:|:--------:|:----------:|:-----:|
+|      1 |     Ana |    Rua A |      São Paulo |     SP | 01000-000 | Camiseta |          2 | 50,00 |
+|      2 |   Bruno |    Rua B | Rio de Janeiro |     RJ | 02000-000 | Camiseta |          1 | 50,00 |
+|      3 |   Carla |    Rua C |      São Paulo |     SP | 01000-000 |    Calça |          3 | 80,00 |
+
+Nesta tabela, temos informações que não estão atomicamente armazenadas, como o "Endereço", "Cidade", "Estado" e "CEP". Além disso, há uma dependência transitiva entre "Produto", "Quantidade" e "Preço", já que o preço pode ser calculado a partir do produto e da quantidade.
+
+Para normalizar essa tabela, podemos dividir em três tabelas: "Pedidos", "Clientes" e "Produtos".
+
+Tabela Pedidos: 
+
+| Pedido | ClienteID | ProdutoID | Quantidade |
+|:------:|:---------:|:---------:|:----------:|
+| 1      |         1 |         1 |          2 |
+| 2      |         2 |         1 |          1 |
+| 3      |         3 |         2 |          3 |
+
+Tabela Clientes:
+
+| ClienteID | Nome  | Endereço | Cidade         | Estado |       CEP |
+|:---------:|:-----:|:--------:|:--------------:|:------:|:---------:|
+|         1 | Ana   |    Rua A | São Paulo      |     SP | 01000-000 |
+|         2 | Bruno |    Rua B | Rio de Janeiro |     RJ | 02000-000 |
+|         3 | Carla |    Rua C | São Paulo      |     SP | 01000-000 |
+
+Tabela Produtos:
+
+| ProdutoID | Nome     | Preço |
+|:---------:|:--------:|:-----:|
+| 1         | Camiseta | 50,00 |
+| 2         | Calça    | 80,00 |
+
+Na tabela "Pedidos", a chave primária é a combinação de "Pedido", "ClienteID" e "ProdutoID". Na tabela "Clientes", a chave primária é "ClienteID" e na tabela "Produtos", a chave primária é "ProdutoID". Com essa estrutura, todas as informações estão atomicamente armazenadas, e não há dependência transitiva entre os campos de cada tabela.
+
+Com isso, temos uma estrutura normalizada que está na **3NF**, e que nos permite gerenciar os dados de forma mais eficiente e segura. Note que este exemplo é apenas ilustrativo e que o processo de normalização pode ser mais complexo em casos reais.
+
 ## Aula 5
+
+### Views
+
+Em PostgreSQL, uma *view* é uma representação virtual de uma tabela que é criada usando uma consulta SQL. É basicamente uma consulta armazenada que é definida como um objeto de banco de dados e pode ser tratada como uma tabela física em muitos casos. Uma *view* é uma tabela virtual que não é armazenada fisicamente em disco, mas que é tratada como se fosse uma tabela real.
+
+As views são usadas principalmente para simplificar consultas complexas e reduzir a quantidade de código SQL que precisamos escrever. Elas também podem ser usadas para limitar o acesso a certas informações, permitindo que os usuários vejam apenas as informações relevantes para eles.
+
+As views podem ser criadas usando a seguinte sintaxe:
+
+````
+CREATE VIEW nome_da_view AS
+SELECT coluna1, coluna2, ...
+FROM tabela
+WHERE condição
+````
+Após criar a view, podemos consultá-la usando a sintaxe básica de SELECT:
+
+```
+SELECT * FROM nome_da_view;
+```
+Também é possível executar consultas mais complexas em cima da view, incluindo *joins*, subconsultas e funções de agregação.
+
+Algumas características importantes das views em PostgreSQL incluem:
+
+- As *views* podem ser atualizáveis ou somente leitura, dependendo da definição da consulta subjacente.
+- As *views* são armazenadas no banco de dados, permitindo que outros usuários ou aplicativos acessem a mesma definição.
+- As *views* podem ser usadas para abstrair a complexidade da consulta subjacente e fornecer uma interface mais simples para os usuários.
+- As *views* podem ser usadas para proteger dados sensíveis, permitindo que os usuários vejam apenas as informações relevantes para eles.
+
+Suponha que temos duas tabelas: "clientes" e "pedidos". A tabela "clientes" tem informações sobre os clientes da loja, enquanto a tabela "pedidos" tem informações sobre os pedidos que os clientes fizeram.
+
+
+````
+CREATE TABLE pedidos (
+    id SERIAL PRIMARY KEY,
+    cliente_id INTEGER REFERENCES clientes(id),
+    data_pedido DATE NOT NULL,
+    total DECIMAL(10, 2) NOT NULL
+);
+````
+Agora, vamos supor que queremos criar uma *view* que mostre o nome do cliente, o número de pedidos que ele fez e o valor total desses pedidos. Podemos fazer isso com o seguinte código SQL:
+```
+CREATE VIEW resumo_pedidos AS
+    SELECT  c.nome,
+            COUNT(p.*) AS num_pedidos,
+            SUM(p.total) AS valor_total
+        FROM clientes c
+            INNER JOIN pedidos p 
+                ON c.id = p.cliente_id
+        GROUP BY c.nome;
+
+```
+Aqui, estamos usando uma cláusula ``INNER JOIN`` para juntar as tabelas "clientes" e "pedidos" com base no campo "cliente_id". Em seguida, estamos usando uma cláusula ``GROUP BY`` para agrupar os resultados pelo nome do cliente. Finalmente, estamos usando a função ``COUNT`` para contar o número de pedidos e a função ``SUM`` para calcular o valor total dos pedidos para cada cliente.
+
+Agora que temos a *view* "resumo_pedidos", podemos usá-la para obter informações resumidas sobre os pedidos de cada cliente com o seguinte código SQL:
+
+```
+SELECT * FROM resumo_pedidos;
+```
+
+Isso irá nos retornar um conjunto de resultados com o nome de cada cliente, o número de pedidos que ele fez e o valor total desses pedidos. Podemos usar essa view sempre que precisarmos dessas informações resumidas, sem precisar escrever a consulta SQL complexa toda vez.
 
 ## Aula 6
 
