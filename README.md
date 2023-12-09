@@ -448,4 +448,213 @@ Isso irá nos retornar um conjunto de resultados com o nome de cada cliente, o n
 
 ## Aula 6
 
-## Aula 7
+### Union
+
+``UNION`` e ``UNION ALL`` são operadores em SQL que permitem combinar os resultados de duas ou mais consultas SELECT em uma única tabela de resultados. Ambos os operadores são usados para combinar as linhas retornadas pelas consultas SELECT, mas há uma diferença importante entre eles.
+
+O operador ``UNION`` remove automaticamente quaisquer linhas duplicadas do resultado, enquanto o operador ``UNION ALL`` **não** as remove e simplesmente une todas as linhas resultantes.
+
+Aqui está um exemplo de como usar o UNION:
+
+````
+SELECT coluna1, coluna2 FROM tabela1
+UNION
+SELECT coluna1, coluna2 FROM tabela2;
+````
+Neste exemplo, o ``UNION`` é usado para combinar os resultados de duas consultas ``SELECT``, que selecionam as mesmas colunas de duas tabelas diferentes, e o operador ``UNION`` é usado para remover automaticamente quaisquer linhas duplicadas.
+
+E aqui está um exemplo de como usar o ``UNION ALL``:
+
+```
+SELECT coluna1, coluna2 FROM tabela1
+UNION ALL
+SELECT coluna1, coluna2 FROM tabela2;
+```
+
+Neste exemplo, o ``UNION ALL`` é usado para combinar os resultados de duas consultas ``SELECT``, que selecionam as mesmas colunas de duas tabelas diferentes, mas o operador ``UNION ALL`` não remove quaisquer linhas duplicadas.
+
+O uso do ``UNION`` pode ser útil quando queremos combinar os resultados de duas ou mais consultas ``SELECT`` e remover automaticamente quaisquer linhas duplicadas. No entanto, o uso do ``UNION ALL`` pode ser útil quando desejamos combinar os resultados de duas ou mais consultas ``SELECT`` sem remover as linhas duplicadas. É importante notar que o uso do ``UNION ALL`` pode ser mais rápido do que o uso do ``UNION``, já que não há o custo extra de se verificar quais linhas são duplicadas.
+
+Suponha que temos duas tabelas, ``clientes`` e ``fornecedores``, que têm a mesma estrutura de colunas:
+
+clientes:
+| id | primeiro | ultimo   | email            | 
+|:--:|:--------:|:--------:|------------------| 
+|  1 | Joao     | Silva    | joao@email.com   | 
+|  2 | Maria    | Santos   | maria@email.com  | 
+|  3 | Jose     | Oliveira | jose.o@email.com | 
+|  4 | Ana      | Souza    | ana@email.com    |
+
+fornecedores:
+| id | primeiro | ultimo  | email             |
+|:--:|:--------:|:-------:|:-----------------:|
+| 4  | Ana      | Souza   | ana@email.com     |
+| 5  | Carlos   | Lima    | carlima@email.com |
+| 6  | Renata   | Pereira | renata@email.com  |
+
+Veja que temos nas duas tabelas, um registro idêntico, poderia ser uma pessoa que é cliente e fornecedor.
+
+Podemos usar o operador ``UNION`` para combinar as duas tabelas e obter uma lista completa de contatos:
+```
+SELECT id, primeiro, ultimo, email FROM clientes
+UNION
+SELECT id, primeiro, ultimo, email FROM fornecedores;
+```
+
+Resultando em:
+
+| id | primeiro | ultimo    | email             |
+|:--:|:--------:|:---------:|:-----------------:|
+| 1  | Joao     | Silva     | joao@email.com    |
+| 2  | Maria    | Santos    | maria@email.com   |
+| 3  | Jose     | Oliveira  | jose.o@email.com  |
+| 4  | Ana      | Souza     | ana@email.com     |
+| 5  | Carlos   | Lima      | carlima@email.com |
+| 6  | Renata   | Pereira   | renata@email.com  |
+
+No entanto, se quisermos obter uma lista completa de todos os contatos, incluindo aqueles que podem aparecer em ambas as tabelas, podemos usar o operador ``UNION ALL``:
+
+```
+SELECT id, primeiro, ultimo, email FROM clientes
+UNION ALL
+SELECT id, primeiro, ultimo, email FROM fornecedores;
+```
+Resultando em:
+
+| id | primeiro | ultimo   | email             |
+|:--:|:--------:|:--------:|:-----------------:|
+| 1  | Joao     | Silva    | joao@email.com    |
+| 2  | Maria    | Santos   | maria@email.com   |
+| 3  | Jose     | Oliveira | jose.o@email.com  |
+| 4  | Ana      | Souza    | ana@email.com     |
+| 4  | Ana      | Souza    | ana@email.com     | 
+| 5  | Carlos   | Lima     | carlima@email.com |
+| 6  | Renata   | Pereira  | renata@email.com  | 
+
+Observe que o operador ``UNION ALL`` simplesmente une todas as linhas resultantes, incluindo quaisquer linhas duplicadas.
+
+Pensando em performance, quando sabemos que nas duas tabelas não terão registros duplicados, prefira utilizar o ``UNION ALL``.
+
+Além do ``UNION``, que une registros, ainda temos outras operações similares entre tabelas:
+
+``INTERSECT``: Retorna apenas dados que são **iguais** nas duas tabelas;
+
+``EXCEPT``: Retorna apenas dados da **primeira tabela** que não existem na segunda tabela.
+
+### Agregação
+
+As funções de agregação em SQL permitem que você calcule valores agregados para um conjunto de registros em uma tabela. Existem várias funções de agregação disponíveis em SQL, incluindo ``SUM``, ``AVG``, ``COUNT``, ``MAX`` e ``MIN``.
+
+A função ``SUM`` é usada para **somar** os valores de uma coluna em uma tabela.
+```
+SELECT SUM(preco) FROM produtos;
+```
+
+A função ``AVG`` é usada para calcular a **média** dos valores de uma coluna em uma tabela.
+```
+SELECT AVG(preco) FROM produtos;
+```
+
+A função ``COUNT`` é usada para **contar** o número de registros em uma tabela ou o número de valores distintos em uma coluna.
+```
+SELECT COUNT(*) FROM produtos;
+```
+
+A função ``MAX`` é usada para encontrar o maior valor em uma coluna em uma tabela.
+```
+SELECT MAX(preco) FROM produtos;
+```
+
+A função ``MIN`` é usada para encontrar o **menor** valor em uma coluna em uma tabela.
+```
+SELECT MIN(preco) FROM produtos;
+```
+
+#### Group By
+A cláusula ``GROUP BY`` é usada em conjunto com as funções de agregação para agrupar registros com base em uma ou mais colunas e, em seguida, calcular valores agregados para cada grupo. Aqui estão alguns exemplos de uso da cláusula ``GROUP BY`` com funções de agregação:
+
+- **Exemplo 1:** contar o número de produtos em cada categoria:
+
+Suponha que temos uma tabela "produtos" com as colunas "id_produto", "nome", "categoria" e "preco". Podemos usar a cláusula ``GROUP BY`` para agrupar os produtos por categoria e, em seguida, usar a função ``COUNT`` para contar o número de produtos em cada categoria. O comando SQL ficaria assim:
+```
+SELECT categoria, COUNT(*) AS num_produtos
+FROM produtos
+GROUP BY categoria;
+```
+
+Este comando SQL retornará uma tabela com duas colunas: "categoria" e "num_produtos". A coluna "categoria" contém os nomes das categorias distintas presentes na tabela "produtos" e a coluna "num_produtos" contém o número de produtos em cada categoria.
+
+- **Exemplo 2:** calcular o preço médio dos produtos em cada categoria:
+
+Podemos usar a mesma tabela "produtos" do exemplo anterior para calcular o preço médio dos produtos em cada categoria. O comando SQL ficaria assim:
+
+```
+SELECT categoria, AVG(preco) AS preco_medio
+FROM produtos
+GROUP BY categoria;
+```
+
+Este comando SQL retornará uma tabela com duas colunas: "categoria" e "preco_medio". A coluna "categoria" contém os nomes das categorias distintas presentes na tabela "produtos" e a coluna "preco_medio" contém o preço médio dos produtos em cada categoria.
+
+- **Exemplo 3:** encontrar a categoria com o preço máximo:
+
+Podemos usar a tabela "produtos" novamente para encontrar a categoria com o preço máximo. O comando SQL ficaria assim:
+
+```
+SELECT categoria, MAX(preco) AS preco_maximo
+FROM produtos
+GROUP BY categoria
+ORDER BY preco_maximo DESC
+LIMIT 1;
+```
+
+Este comando SQL retornará uma tabela com duas colunas: "categoria" e "preco_maximo". A cláusula ``ORDER BY`` é usada para ordenar os resultados pelo preço máximo em ordem decrescente e a cláusula ``LIMIT`` é usada para limitar o número de resultados a 1 (ou seja, a categoria com o preço máximo).
+
+### Cast
+
+A função ``CAST`` em SQL é usada para converter um valor de um tipo de dados em outro tipo de dados. Isso é útil quando precisamos comparar ou manipular valores em diferentes tipos de dados, ou quando precisamos armazenar valores em um tipo de dados diferente.
+
+O funcionamento da função ``CAST`` é simples: ela recebe dois argumentos, o valor a ser convertido e o tipo de dados para o qual ele deve ser convertido. A sintaxe básica da função ``CAST`` é a seguinte:
+
+```
+CAST(valor AS tipo_de_dados)
+```
+
+O primeiro argumento "valor" é o valor a ser convertido e o segundo argumento "tipo_de_dados" é o tipo de dados para o qual o valor deve ser convertido.
+
+Aqui estão alguns exemplos de diferentes tipos de ``CAST``:
+
+```
+CAST de texto para número
+SELECT CAST('10' AS INT);
+```
+
+Este comando SQL converterá a string "10" em um número inteiro e retornará o valor 10.
+
+```
+CAST de número para texto
+SELECT CAST(10 AS VARCHAR);
+```
+
+Este comando SQL converterá o número 10 em uma string e retornará o valor "10".
+
+```
+CAST de data para texto
+SELECT CAST(CURRENT_DATE AS VARCHAR);
+```
+
+Este comando SQL converterá a data atual em uma string e retornará o valor no formato "YYYY-MM-DD".
+
+CAST de texto para data
+
+```
+SELECT CAST('2023-03-12' AS DATE);
+```
+
+Este comando SQL converterá a string "2023-03-12" em uma data e retornará o valor em formato de ``data``.
+
+```
+CAST de número para booleano
+SELECT CAST(0 AS BOOLEAN);
+Este comando SQL converterá o número 0 em um valor booleano e retornará o valor FALSE.
+```
